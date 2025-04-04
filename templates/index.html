@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Remote Job Finder</h2>
+
+    <!-- Search Form -->
+    <form method="POST" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-6">
+                <input type="text" name="search" class="form-control bg-secondary text-light" placeholder="Enter job title..." value="{{ search_term }}">
+            </div>
+            <div class="col-md-4">
+                <select name="category" class="form-select bg-secondary text-light">
+                    <option value="">Select Category</option>
+                    {% for category in categories %}
+                    <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>
+                        {{ category.replace('-', ' ').title() }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Job Results -->
+    {% if jobs %}
+    <div class="table-responsive">
+        <table class="table table-dark table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Apply</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.company_name }}</td>
+                    <td>{{ job.candidate_required_location }}</td>
+                    <td><a href="{{ job.url }}" class="btn btn-success btn-sm" target="_blank">Apply</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center text-warning">⚠ No jobs found. Try another search.</p>
+    {% endif %}
+</div>
+{% endblock %}
